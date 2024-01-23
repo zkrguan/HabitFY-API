@@ -54,5 +54,7 @@ Will not be included at here since UI is developed in an individual repo.
 
 ### Persistence layer:
 
-DB where the application saves the data. 
+"Models": The files in models will reflect how the actual DB tables look like in the storage. DbContext will be placed in this folder too because it wires up the connections between C# classes and the actual DB tables. 
+
+
 
