@@ -2,7 +2,7 @@
 
 ## What is HabitFY?
 
-HabitFY is not just another ; it's a catalyst for positive change.
+HabitFY is not just another web application ; it's a catalyst for positive change.
 
 It's that something. That gets your lazy butt moving, urging you to toss away the whole pack of smokes. It's the nudge that breaks the cycle of endless TikTok scrolling, motivating you to get up and engage in activities that truly matter. HabitFY is your partner in transforming routines, fostering healthier habits, and bringing a positive shift to your lifestyle.
 
