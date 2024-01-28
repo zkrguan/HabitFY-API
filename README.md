@@ -8,15 +8,15 @@ It's that something. That gets your lazy butt moving, urging you to toss away th
 
 ## Tech Detail
 
-Framework: dot net core 8.0 
+Framework: dot net core 8.0
 
 ORM: EF Core 8.0
 
-Recommended IDE: Visual Studio 2022 > 17.8 
+Recommended IDE: Visual Studio 2022 > 17.8
 
-Security: MS identity
+Security and User management: AWS Cognito and its package on dot net core.
 
-DB: MS SQL Server
+DB: MS SQL Server 
 
 (More packages will be updated at here)
 
@@ -56,5 +56,6 @@ Will not be included at here since UI is developed in an individual repo.
 
 "Models": The files in models will reflect how the actual DB tables look like in the storage. DbContext will be placed in this folder too because it wires up the connections between C# classes and the actual DB tables. 
 
+## Dev and testing configs:
 
-
+server is listening on the 8080. 
