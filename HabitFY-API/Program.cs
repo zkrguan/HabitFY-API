@@ -21,6 +21,17 @@ builder.Services.AddAuthentication(options =>
         };
     }
 );
+
+// Add CORS services and define a policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 //_________________
 
 builder.Services.AddControllers();
@@ -38,6 +49,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Use CORS with the defined policy
+app.UseCors("AllowSpecificOrigin");
 
 app.UseAuthorization();
 
