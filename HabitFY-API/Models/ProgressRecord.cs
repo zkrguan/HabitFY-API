@@ -1,6 +1,6 @@
 ﻿namespace HabitFY_API.Models
 {
-    public class ProgressRecordModel
+    public class ProgressRecord
     {
         public int Id { get; set; }
 
@@ -11,6 +11,6 @@
         public required double CompletedValue {  get; set; }
 
         // One record must relevant to one goal.
-        public required GoalModel Goal { get; set; }
+        public required Goal Goal { get; set; }
     }
 }

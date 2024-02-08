@@ -4,7 +4,7 @@
      * This is used for the users to fill the analysis relevant information.
      * Don't ever put anything sensitive. I don't want to get sued for dat.
      * */
-    public class UserProfileModel
+    public class UserProfile
     {
         
         // Reminder:
@@ -28,9 +28,10 @@
         public required int Age {  get; set; }
 
 
+
         // RG: Nullable because when the profile firstly made
         // They haven't had anything to track yet
         // In the future, user can have one or multiple goals. 
-        public ICollection<GoalModel>? Goals { get; set; }
+        public ICollection<Goal>? Goals { get; set; }
     }
 }
