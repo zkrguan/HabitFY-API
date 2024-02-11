@@ -2,6 +2,11 @@ using HabitFY_API.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using HabitFY_API.Controllers;
+using HabitFY_API.Repositories;
+using HabitFY_API.Repositories.UnitOfWork;
+using Asp.Versioning;
+using HabitFY_API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,15 +47,6 @@ builder.Services.AddCors(options =>
 // The Official manual recommended way to connect
 // https://learn.microsoft.com/en-us/azure/azure-sql/database/azure-sql-dotnet-entity-framework-core-quickstart?view=azuresql&tabs=visual-studio%2Cservice-connector%2Cportal
 var connection = String.Empty;
-//if (builder.Environment.IsDevelopment())
-//{
-//    builder.Configuration.AddEnvironmentVariables().AddJsonFile("appsettings.Development.json");
-//    connection = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
-//}
-//else
-//{
-//}
-
 // Build configuration
 var config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -61,10 +57,33 @@ connection = config.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
 
 // -------------------------------------------------
+// Setting up api versioning
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1); // default version is 1 
+    options.ReportApiVersions = true;
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ApiVersionReader = ApiVersionReader.Combine(
+        new UrlSegmentApiVersionReader(),
+        new HeaderApiVersionReader("X-Api-Version"));
+}).AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'V";
+    options.SubstituteApiVersionInUrl = true;
+});
+
+// -------------------------------------------------
 builder.Services.AddControllers();
+// ___________________________________
+// Registering the UserProfile services
+builder.Services.AddScoped<UserProfileService>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+
 
 var app = builder.Build();
 

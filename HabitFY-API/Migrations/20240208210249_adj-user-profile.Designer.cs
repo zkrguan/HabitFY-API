@@ -4,6 +4,7 @@ using HabitFY_API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HabitFY_API.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240208210249_adj-user-profile")]
+    partial class adjuserprofile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,9 +106,6 @@ namespace HabitFY_API.Migrations
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("NeedReport")
-                        .HasColumnType("bit");
-
                     b.Property<string>("PostalCode")
                         .HasColumnType("nvarchar(max)");
 
@@ -114,6 +114,9 @@ namespace HabitFY_API.Migrations
 
                     b.Property<string>("Sex")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("needReport")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
