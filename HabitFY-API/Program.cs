@@ -7,6 +7,8 @@ using HabitFY_API.Repositories;
 using HabitFY_API.Repositories.UnitOfWork;
 using Asp.Versioning;
 using HabitFY_API.Services;
+using AutoMapper;
+using HabitFY_API.Configs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -76,7 +78,22 @@ builder.Services.AddApiVersioning(options =>
 builder.Services.AddControllers();
 // ___________________________________
 // Registering the UserProfile services
+
+// ------------------Adding automapper configurations-------------------------------
+var mapperConfig = new MapperConfiguration(cgf =>
+{
+    // Here you add the profile configured in the other files.
+    cgf.AddProfile(typeof(AutoMapperConfigs));
+});
+
+var mapper = mapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
+// _______________________________________________________________________________
+
 builder.Services.AddScoped<UserProfileService>();
+
+
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
