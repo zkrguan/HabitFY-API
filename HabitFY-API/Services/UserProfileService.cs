@@ -1,17 +1,22 @@
-﻿using HabitFY_API.Interfaces.Repositories;
+﻿using AutoMapper;
+using HabitFY_API.DTOs;
+using HabitFY_API.Interfaces.Repositories;
 using HabitFY_API.Interfaces.Services;
 using HabitFY_API.Models;
 using HabitFY_API.Repositories.UnitOfWork;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace HabitFY_API.Services
 {
     public class UserProfileService : IUserProfileService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public UserProfileService(IUnitOfWork unitOfWork)
+        public UserProfileService(IUnitOfWork unitOfWork,IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
         
         // So far we only need like 
@@ -21,12 +26,15 @@ namespace HabitFY_API.Services
         }
 
         // Should use dto here on the parameter and moving the 
-        public void CreateUserProfile(UserProfile userProfile)
+        public void CreateUserProfile(CreateUserProfileDTO userProfile)
         {
-            throw new NotImplementedException();
+            // <destinationClass>(srcObject)
+            var result =_mapper.Map<UserProfile>(userProfile);
+            _unitOfWork.UserProfile.Add(result);
+            _unitOfWork.Save();
         }
 
-        public void UpdateUserProfile(UserProfile user)
+        public void UpdateUserProfile(UpdateUserProfileDTO user)
         {
             throw new NotImplementedException();
         }
