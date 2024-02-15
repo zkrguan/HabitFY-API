@@ -6,10 +6,14 @@ namespace HabitFY_API.Configs
 {
     public class AutoMapperConfigs:Profile
     {
-        public AutoMapperConfigs()
+        //AP: Intialize and return mapper object
+        public static Mapper InitializeAutoMapper()
         {
             // RG: hint-> CreateMap<source,destination>
-            CreateMap<CreateUserProfileDTO, UserProfile>();
+            //CreateMap<CreateUserProfileDTO, UserProfile>();
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<UserProfile, GetUserProfileDTO>());
+            var mapper = new Mapper(config);
+            return mapper;
         }
     }
 }
