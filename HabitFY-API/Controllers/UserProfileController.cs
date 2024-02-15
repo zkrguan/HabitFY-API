@@ -107,10 +107,10 @@ namespace HabitFY_API.Controllers
                     throw new("Account Does not Exist.");
                 }
 
-                if (id != .Id)
-                {
-                    return BadRequest();
-                }
+                //if (id != .Id)
+                //{
+                //    return BadRequest();
+                //}
 
             }
             catch(Exception ex)
