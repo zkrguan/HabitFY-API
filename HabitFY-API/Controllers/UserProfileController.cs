@@ -4,6 +4,7 @@ using HabitFY_API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HabitFY_API.Controllers
 {
@@ -85,7 +86,40 @@ namespace HabitFY_API.Controllers
         // If you figured out, max resepect. 
         public IActionResult Put(string id, [FromBody] UpdateUserProfileDTO dto)
         {
-            return Ok($"Hi you just reached the route to update user profile. User profile details: NeedReport={dto.NeedReport}, Sex={dto.Sex}, Province={dto.Province}, City={dto.City}, PostalCode={dto.PostalCode}, Age={dto.Age}");
+            // Make sure profile exists
+            // Change Data
+            // User _unitOfWork.UserProfile.Add to overrite?
+            // use _unitOfWork.Save() to save changes?
+            // Make sure to know which layer this will be happening on
+
+
+
+            /*if (_userProfileService.GetUserProfileByID(id) != )
+            {
+                return BadRequest();
+            }*/
+
+            try
+            {
+                //Check if entity exist
+                if (/*Does not exist*/)
+                {
+                    throw new("Account Does not Exist.");
+                }
+
+                if (id != .Id)
+                {
+                    return BadRequest();
+                }
+
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            
+            //return Ok($"Hi you just reached the route to update user profile. User profile details: NeedReport={dto.NeedReport}, Sex={dto.Sex}, Province={dto.Province}, City={dto.City}, PostalCode={dto.PostalCode}, Age={dto.Age}");
         }
 
 

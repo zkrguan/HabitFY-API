@@ -38,6 +38,13 @@ namespace HabitFY_API.Services
 
         public void UpdateUserProfile(UpdateUserProfileDTO user)
         {
+            // Make sure profile exists
+            // If it doesn't return false
+            // Change Data
+            // User _unitOfWork.UserProfile.Add to overrite?
+            // use _unitOfWork.Save() to save changes?
+            // Make sure to know which layer this will be happening on
+
             throw new NotImplementedException();
         }
 
