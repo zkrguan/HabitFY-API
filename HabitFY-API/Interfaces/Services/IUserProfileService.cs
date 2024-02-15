@@ -5,7 +5,7 @@ namespace HabitFY_API.Interfaces.Services
 {
     public interface IUserProfileService
     {
-        public UserProfile GetUserProfileByID(string id);
+        public GetUserProfileDTO GetUserProfileByID(string id);
 
         public void CreateUserProfile(CreateUserProfileDTO user);
 

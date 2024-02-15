@@ -20,9 +20,11 @@ namespace HabitFY_API.Services
         }
         
         // So far we only need like 
-        public UserProfile GetUserProfileByID(string id)
+        public GetUserProfileDTO GetUserProfileByID(string id)
         {
-            return _unitOfWork.UserProfile.GetById(id);
+            var userProfile = _unitOfWork.UserProfile.GetById(id);
+            var result = _mapper.Map<GetUserProfileDTO>(userProfile);
+            return result;
         }
 
         // Should use dto here on the parameter and moving the 

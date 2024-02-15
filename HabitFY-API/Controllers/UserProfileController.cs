@@ -46,32 +46,16 @@ namespace HabitFY_API.Controllers
             //If an exception encountered == response code: 404 and content-length: 0
             try
             {
-                //Get user profile if not found == response code: 404 and content-length: 0
+                //Get user profile dto
                 var result = _userProfileService.GetUserProfileByID(id);
-                //If input does not match expected format do not query
-                var validateRegex = "^user[0-9]+$";
-                if (Regex.IsMatch(id.ToString().ToLower().Trim(), validateRegex))
-                {
-                    if (result == null)
-                    {
-                        return NotFound(null);
-
-                    }
-                    else
-                    {
-                        //Map object to DTO and return
-                        var mapper = AutoMapperConfigs.InitializeAutoMapper();
-                        var output = mapper.Map<GetUserProfileDTO>(result);
-                        return Ok(output);
-                    }
-                }
+                if (result == null) { throw new ArgumentException("No User Found"); }
                 else
-                {
-                    throw new ArgumentException("Invalid Input");
-                }
+                    return Ok(result);
+
             }
             catch (Exception e)
             {
+                //response code: 404 and content-length: 0
                 return NotFound(null);
             }
         }
