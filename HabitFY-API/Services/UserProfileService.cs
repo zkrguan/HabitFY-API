@@ -36,16 +36,15 @@ namespace HabitFY_API.Services
             _unitOfWork.Save();
         }
 
-        public void UpdateUserProfile(UpdateUserProfileDTO user)
+        public void UpdateUserProfile(string Id,UpdateUserProfileDTO user)
         {
-            // Make sure profile exists
-            // If it doesn't return false
-            // Change Data
-            // User _unitOfWork.UserProfile.Add to overrite?
-            // use _unitOfWork.Save() to save changes?
-            // Make sure to know which layer this will be happening on
-
-            throw new NotImplementedException();
+            // use get method to get the object/
+            var result = _unitOfWork.UserProfile.GetById(Id);
+            // Then change the object//
+            result.Age = user.Age;
+            _mapper.Map<UpdateUserProfileDTO, UserProfile>(user, result);
+            // Then save the object//
+            _unitOfWork.Save();
         }
 
         // RG: Don't touch, I am doing Nuke Testing with Mr.Kim here.

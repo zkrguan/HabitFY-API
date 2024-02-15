@@ -86,40 +86,14 @@ namespace HabitFY_API.Controllers
         // If you figured out, max resepect. 
         public IActionResult Put(string id, [FromBody] UpdateUserProfileDTO dto)
         {
-            // Make sure profile exists
-            // Change Data
-            // User _unitOfWork.UserProfile.Add to overrite?
-            // use _unitOfWork.Save() to save changes?
-            // Make sure to know which layer this will be happening on
-
-
-
-            /*if (_userProfileService.GetUserProfileByID(id) != )
-            {
-                return BadRequest();
-            }*/
-
-            try
-            {
-                //Check if entity exist
-                if (/*Does not exist*/)
-                {
-                    throw new("Account Does not Exist.");
-                }
-
-                //if (id != .Id)
-                //{
-                //    return BadRequest();
-                //}
-
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-            
-            //return Ok($"Hi you just reached the route to update user profile. User profile details: NeedReport={dto.NeedReport}, Sex={dto.Sex}, Province={dto.Province}, City={dto.City}, PostalCode={dto.PostalCode}, Age={dto.Age}");
+            // We still wrap this around the try catch.
+            // And discuss what Sujan wants if the operation failed. 
+            _userProfileService.UpdateUserProfile(id, dto);
+            // TODO:
+            // Discuss what Frontend wants when the update sucess.. //
+            // Status code //
+            // What data they want? The updated object? Or other stuff?
+            return Ok($"Hi you just reached the route to update user profile. User profile details: NeedReport={dto.NeedReport}, Sex={dto.Sex}, Province={dto.Province}, City={dto.City}, PostalCode={dto.PostalCode}, Age={dto.Age}");
         }
 
 

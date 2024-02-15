@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using HabitFY_API.DTOs;
 using HabitFY_API.Models;
 
