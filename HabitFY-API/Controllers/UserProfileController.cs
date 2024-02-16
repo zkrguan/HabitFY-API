@@ -1,11 +1,9 @@
 ﻿using Asp.Versioning;
-using HabitFY_API.Configs;
 using HabitFY_API.DTOs;
 using HabitFY_API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.RegularExpressions;
 
 namespace HabitFY_API.Controllers
 {
@@ -31,8 +29,6 @@ namespace HabitFY_API.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(string id)
         {
-
-            //README
             // RG: Attentions here
             // Whomever wants to implement this controller
             // This is 90% done, however a few things to do here. 
@@ -40,40 +36,8 @@ namespace HabitFY_API.Controllers
             // 1 Try catch and cordinate with FrontEnd to handle the case that could not find anything from the DB.
             // 2 Returning the Design model Object is a huge NONONONONO.
             // Legit way is to Use Auto Mapper convert the UserProfile Object to CreateUserProfileDTO
-
-
-            //AP:try and catch for handling any exceptions thrown
-            //If an exception encountered == response code: 404 and content-length: 0
-            try
-            {
-                //Get user profile if not found == response code: 404 and content-length: 0
-                var result = _userProfileService.GetUserProfileByID(id);
-                //If input does not match expected format do not query
-                var validateRegex = "^user[0-9]+$";
-                if (Regex.IsMatch(id.ToString().ToLower().Trim(), validateRegex))
-                {
-                    if (result == null)
-                    {
-                        return NotFound(null);
-
-                    }
-                    else
-                    {
-                        //Map object to DTO and return
-                        var mapper = AutoMapperConfigs.InitializeAutoMapper();
-                        var output = mapper.Map<GetUserProfileDTO>(result);
-                        return Ok(output);
-                    }
-                }
-                else
-                {
-                    throw new ArgumentException("Invalid Input");
-                }
-            }
-            catch (Exception e)
-            {
-                return NotFound(null);
-            }
+            var result = _userProfileService.GetUserProfileByID(id);
+            return Ok(result);
         }
 
         [MapToApiVersion(1)]
