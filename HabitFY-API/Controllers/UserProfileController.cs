@@ -36,8 +36,25 @@ namespace HabitFY_API.Controllers
             // 1 Try catch and cordinate with FrontEnd to handle the case that could not find anything from the DB.
             // 2 Returning the Design model Object is a huge NONONONONO.
             // Legit way is to Use Auto Mapper convert the UserProfile Object to CreateUserProfileDTO
-            var result = _userProfileService.GetUserProfileByID(id);
-            return Ok(result);
+
+
+            //AP:try and catch for handling any exceptions thrown
+            //If an exception encountered == response code: 404 and content-length: 0
+            try
+            {
+                //Get user profile dto
+                var result = _userProfileService.GetUserProfileByID(id);
+                if (result == null) { throw new ArgumentException("No User Found"); }
+                else
+                    return Ok(result);
+
+            }
+            catch (Exception e)
+            {
+                //response code: 404 and content-length: 0
+                return NotFound(null);
+            }
+
         }
 
         [MapToApiVersion(1)]

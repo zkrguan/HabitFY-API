@@ -10,6 +10,8 @@ namespace HabitFY_API.Configs
         {
             // RG: hint-> CreateMap<source,destination>
             CreateMap<CreateUserProfileDTO, UserProfile>();
+            CreateMap<UpdateUserProfileDTO, UserProfile>();
+            CreateMap<UserProfile, GetUserProfileDTO>();
         }
     }
 }
