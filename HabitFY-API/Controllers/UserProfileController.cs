@@ -1,11 +1,9 @@
 ﻿using Asp.Versioning;
-using HabitFY_API.Configs;
 using HabitFY_API.DTOs;
 using HabitFY_API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.RegularExpressions;
 
 namespace HabitFY_API.Controllers
 {
@@ -31,8 +29,6 @@ namespace HabitFY_API.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(string id)
         {
-
-            //README
             // RG: Attentions here
             // Whomever wants to implement this controller
             // This is 90% done, however a few things to do here. 
@@ -58,6 +54,7 @@ namespace HabitFY_API.Controllers
                 //response code: 404 and content-length: 0
                 return NotFound(null);
             }
+
         }
 
         [MapToApiVersion(1)]
