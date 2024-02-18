@@ -4,6 +4,7 @@ using HabitFY_API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HabitFY_API.Controllers
 {
@@ -85,7 +86,16 @@ namespace HabitFY_API.Controllers
         // If you figured out, max resepect. 
         public IActionResult Put(string id, [FromBody] UpdateUserProfileDTO dto)
         {
-            return Ok($"Hi you just reached the route to update user profile. User profile details: NeedReport={dto.NeedReport}, Sex={dto.Sex}, Province={dto.Province}, City={dto.City}, PostalCode={dto.PostalCode}, Age={dto.Age}");
+            // 
+            try
+            {
+                _userProfileService.UpdateUserProfile(id, dto);
+                return Ok("Updated success");
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
 

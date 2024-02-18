@@ -36,12 +36,14 @@ namespace HabitFY_API.Services
             _unitOfWork.Save();
         }
 
-        public void UpdateUserProfile(UpdateUserProfileDTO user)
+        public void UpdateUserProfile(string Id,UpdateUserProfileDTO user)
         {
-            throw new NotImplementedException();
+            var result = _unitOfWork.UserProfile.GetById(Id);
+            result.Age = user.Age;
+            _mapper.Map<UpdateUserProfileDTO, UserProfile>(user, result);
+            _unitOfWork.Save();
         }
 
-        // RG: Don't touch, I am doing Nuke Testing with Mr.Kim here.
         public void TestService()
         {
             var userProfiles = new List<UserProfile>
