@@ -86,14 +86,16 @@ namespace HabitFY_API.Controllers
         // If you figured out, max resepect. 
         public IActionResult Put(string id, [FromBody] UpdateUserProfileDTO dto)
         {
-            // We still wrap this around the try catch.
-            // And discuss what Sujan wants if the operation failed. 
-            _userProfileService.UpdateUserProfile(id, dto);
-            // TODO:
-            // Discuss what Frontend wants when the update sucess.. //
-            // Status code //
-            // What data they want? The updated object? Or other stuff?
-            return Ok($"Hi you just reached the route to update user profile. User profile details: NeedReport={dto.NeedReport}, Sex={dto.Sex}, Province={dto.Province}, City={dto.City}, PostalCode={dto.PostalCode}, Age={dto.Age}");
+            // 
+            try
+            {
+                _userProfileService.UpdateUserProfile(id, dto);
+                return Ok("Updated success");
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
 

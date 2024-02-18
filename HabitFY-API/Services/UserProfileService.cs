@@ -38,16 +38,12 @@ namespace HabitFY_API.Services
 
         public void UpdateUserProfile(string Id,UpdateUserProfileDTO user)
         {
-            // use get method to get the object/
             var result = _unitOfWork.UserProfile.GetById(Id);
-            // Then change the object//
             result.Age = user.Age;
             _mapper.Map<UpdateUserProfileDTO, UserProfile>(user, result);
-            // Then save the object//
             _unitOfWork.Save();
         }
 
-        // RG: Don't touch, I am doing Nuke Testing with Mr.Kim here.
         public void TestService()
         {
             var userProfiles = new List<UserProfile>
