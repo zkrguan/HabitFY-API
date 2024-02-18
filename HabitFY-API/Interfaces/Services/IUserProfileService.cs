@@ -1,14 +1,15 @@
-﻿using HabitFY_API.Models;
+﻿using HabitFY_API.DTOs;
+using HabitFY_API.Models;
 
 namespace HabitFY_API.Interfaces.Services
 {
     public interface IUserProfileService
     {
-        public UserProfile GetUserProfileByID(string id);
+        public GetUserProfileDTO GetUserProfileByID(string id);
 
-        public void CreateUserProfile(UserProfile user);
+        public void CreateUserProfile(CreateUserProfileDTO user);
 
-        public void UpdateUserProfile(UserProfile user);
+        public void UpdateUserProfile(string Id, UpdateUserProfileDTO user);
 
         // RG:
         // We will make it like MS Thug style of business logic.(So far I couldn't get my azure account deleted)

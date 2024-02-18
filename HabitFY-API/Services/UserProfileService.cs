@@ -1,37 +1,49 @@
-﻿using HabitFY_API.Interfaces.Repositories;
+﻿using AutoMapper;
+using HabitFY_API.DTOs;
+using HabitFY_API.Interfaces.Repositories;
 using HabitFY_API.Interfaces.Services;
 using HabitFY_API.Models;
 using HabitFY_API.Repositories.UnitOfWork;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace HabitFY_API.Services
 {
     public class UserProfileService : IUserProfileService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public UserProfileService(IUnitOfWork unitOfWork)
+        public UserProfileService(IUnitOfWork unitOfWork,IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
         
         // So far we only need like 
-        public UserProfile GetUserProfileByID(string id)
+        public GetUserProfileDTO GetUserProfileByID(string id)
         {
-            return _unitOfWork.UserProfile.GetById(id);
+            var userProfile = _unitOfWork.UserProfile.GetById(id);
+            var result = _mapper.Map<GetUserProfileDTO>(userProfile);
+            return result;
         }
 
         // Should use dto here on the parameter and moving the 
-        public void CreateUserProfile(UserProfile userProfile)
+        public void CreateUserProfile(CreateUserProfileDTO userProfile)
         {
-            throw new NotImplementedException();
+            // <destinationClass>(srcObject)
+            var result =_mapper.Map<UserProfile>(userProfile);
+            _unitOfWork.UserProfile.Add(result);
+            _unitOfWork.Save();
         }
 
-        public void UpdateUserProfile(UserProfile user)
+        public void UpdateUserProfile(string Id,UpdateUserProfileDTO user)
         {
-            throw new NotImplementedException();
+            var result = _unitOfWork.UserProfile.GetById(Id);
+            result.Age = user.Age;
+            _mapper.Map<UpdateUserProfileDTO, UserProfile>(user, result);
+            _unitOfWork.Save();
         }
 
-        // RG: Don't touch, I am doing Nuke Testing with Mr.Kim here.
         public void TestService()
         {
             var userProfiles = new List<UserProfile>

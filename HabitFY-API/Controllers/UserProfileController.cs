@@ -2,7 +2,9 @@
 using HabitFY_API.DTOs;
 using HabitFY_API.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HabitFY_API.Controllers
 {
@@ -35,8 +37,25 @@ namespace HabitFY_API.Controllers
             // 1 Try catch and cordinate with FrontEnd to handle the case that could not find anything from the DB.
             // 2 Returning the Design model Object is a huge NONONONONO.
             // Legit way is to Use Auto Mapper convert the UserProfile Object to CreateUserProfileDTO
-            var result = _userProfileService.GetUserProfileByID(id);
-            return Ok(result);
+
+
+            //AP:try and catch for handling any exceptions thrown
+            //If an exception encountered == response code: 404 and content-length: 0
+            try
+            {
+                //Get user profile dto
+                var result = _userProfileService.GetUserProfileByID(id);
+                if (result == null) { throw new ArgumentException("No User Found"); }
+                else
+                    return Ok(result);
+
+            }
+            catch (Exception e)
+            {
+                //response code: 404 and content-length: 0
+                return NotFound(null);
+            }
+
         }
 
         [MapToApiVersion(1)]
@@ -45,7 +64,15 @@ namespace HabitFY_API.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] CreateUserProfileDTO dto)
         {
-            return Ok($"Hi you just reached the route post api/UserProfile. User profile details: UserId={dto.UserId}, NeedReport={dto.NeedReport}, Sex={dto.Sex}, Province={dto.Province}, City={dto.City}, PostalCode={dto.PostalCode}, Age={dto.Age}");
+            try
+            {
+                _userProfileService.CreateUserProfile(dto);
+                // On the response header location, it will indicate where it is persisted
+                return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{dto.Id}","Record persisted");
+            }
+            catch (Exception ex) { 
+                return BadRequest(ex.Message);
+            }
 
         }
 
@@ -59,7 +86,16 @@ namespace HabitFY_API.Controllers
         // If you figured out, max resepect. 
         public IActionResult Put(string id, [FromBody] UpdateUserProfileDTO dto)
         {
-            return Ok($"Hi you just reached the route to update user profile. User profile details: NeedReport={dto.NeedReport}, Sex={dto.Sex}, Province={dto.Province}, City={dto.City}, PostalCode={dto.PostalCode}, Age={dto.Age}");
+            // 
+            try
+            {
+                _userProfileService.UpdateUserProfile(id, dto);
+                return Ok("Updated success");
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
 
