@@ -88,18 +88,20 @@ var mapperConfig = new MapperConfiguration(cgf =>
 
 var mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
-// _______________________________________________________________________________
+// ___________________________Services registered here__________________________
 
 builder.Services.AddScoped<UserProfileService>();
 
+builder.Services.AddScoped<CosmosService>();
 
+// -----------------------------------------------------
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
 var app = builder.Build();

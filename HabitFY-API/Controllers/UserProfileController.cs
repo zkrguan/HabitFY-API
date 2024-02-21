@@ -1,8 +1,6 @@
 ﻿using Asp.Versioning;
 using HabitFY_API.DTOs;
 using HabitFY_API.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -101,10 +99,11 @@ namespace HabitFY_API.Controllers
 
         // RG: This is my test field. Please don't touch this one. 
         [HttpGet("/test")]
-        public IActionResult get()
+        public async Task<IActionResult> getTestAsync()
         {
-            return Ok("Not your route dude, keep walking man !");
-            //_userProfileService.TestService();
+            //var result = await _userProfileService.TestService();
+            await _userProfileService.TestService();
+            return Ok("Done testing");
         }
 
     }
