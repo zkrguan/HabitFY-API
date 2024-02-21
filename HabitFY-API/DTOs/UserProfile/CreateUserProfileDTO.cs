@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
-namespace HabitFY_API.DTOs
+namespace HabitFY_API.DTOs.UserProfile
 {
-    public class UpdateUserProfileDTO
+    public class CreateUserProfileDTO
     {
+        public required string Id { get; set; }
         public required bool NeedReport { get; set; }
         public string? Sex { get; set; }
         public string? Province { get; set; }

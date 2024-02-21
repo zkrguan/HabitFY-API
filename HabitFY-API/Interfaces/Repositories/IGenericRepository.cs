@@ -3,12 +3,12 @@
 namespace HabitFY_API.Interfaces.Repositories
 {
     // RG: T would be the model class name 
-    public interface IGenericRepository<T> where T : class
+    public interface IGenericRepository<T, KeyType> where T : class
     {
         // RG:
         // First Define a few generic Methods 
         // Like almost all the repo class should have these methods. 
-        T GetById(string id);
+        T GetById(KeyType id);
         IEnumerable<T> GetAll();
         IEnumerable<T> Find(Expression<Func<T, bool>> expression);
         void Add(T entity);
