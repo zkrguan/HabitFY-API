@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace HabitFY_API.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T, KeyType> : IGenericRepository<T, KeyType> where T : class
     {
         protected readonly ApplicationContext _context;
         public GenericRepository(ApplicationContext context)
@@ -27,7 +27,7 @@ namespace HabitFY_API.Repositories
         {
             return _context.Set<T>().ToList();
         }
-        public T GetById(string id)
+        public T GetById(KeyType id)
         {
             return _context.Set<T>().Find(id);
         }

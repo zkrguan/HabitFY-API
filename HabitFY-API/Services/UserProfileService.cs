@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using HabitFY_API.DTOs;
+using HabitFY_API.DTOs.UserProfile;
 using HabitFY_API.Interfaces.Repositories;
 using HabitFY_API.Interfaces.Services;
 using HabitFY_API.Models;
@@ -34,7 +34,10 @@ namespace HabitFY_API.Services
         {
             // <destinationClass>(srcObject)
             var result =_mapper.Map<UserProfile>(userProfile);
+            // The userProfile has been validated before it even enters the controller
+            #pragma warning disable CS8604 // Possible null reference argument.
             _unitOfWork.UserProfile.Add(result);
+            #pragma warning restore CS8604 // Possible null reference argument.
             _unitOfWork.Save();
         }
 
@@ -46,7 +49,7 @@ namespace HabitFY_API.Services
             _unitOfWork.Save();
         }
 
-        public async Task TestService()
+        public void TestService()
 
         {
 
