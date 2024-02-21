@@ -9,6 +9,7 @@ using Asp.Versioning;
 using HabitFY_API.Services;
 using AutoMapper;
 using HabitFY_API.Configs;
+using HabitFY_API.Interfaces.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -89,18 +90,13 @@ var mapperConfig = new MapperConfiguration(cgf =>
 var mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 // ___________________________Services registered here__________________________
-
 builder.Services.AddScoped<UserProfileService>();
-
+builder.Services.AddScoped<IGoalService,GoalService>();
 builder.Services.AddScoped<CosmosService>();
-
 // -----------------------------------------------------
-
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 

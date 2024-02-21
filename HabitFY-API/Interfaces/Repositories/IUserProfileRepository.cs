@@ -2,7 +2,7 @@
 
 namespace HabitFY_API.Interfaces.Repositories
 {
-    public interface IUserProfileRepository : IGenericRepository<UserProfile>
+    public interface IUserProfileRepository : IGenericRepository<UserProfile,string>
     {
 
     }

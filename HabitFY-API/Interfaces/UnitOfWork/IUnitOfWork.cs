@@ -6,11 +6,11 @@ namespace HabitFY_API.Repositories.UnitOfWork
     {
         //  RG :
         //  Adding your repository interfaces here
+        //  You are only allowed to use those repo objects but not change those.
+        //  That is why only getter is there. 
         IUserProfileRepository UserProfile { get; }
-
+        IGoalRepository Goal { get; }
         // Save for creation 
-        // 
         int Save();
-
     }
 }

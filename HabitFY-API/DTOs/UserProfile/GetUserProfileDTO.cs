@@ -1,4 +1,4 @@
-﻿namespace HabitFY_API.DTOs
+﻿namespace HabitFY_API.DTOs.UserProfile
 {
     public class GetUserProfileDTO
     {
