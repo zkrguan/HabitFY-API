@@ -49,5 +49,23 @@ namespace HabitFY_API.Services
             }
 
         }
+
+        public GetGoalDTO UpdateGoal(int id,UpdateGoalDTO dto)
+        {
+            var foundGoal = _unitOfWork.Goal.GetById(id);
+            if (foundGoal != null)
+            {
+                // update the object by using automapper
+                var updatedGoal = _mapper.Map<UpdateGoalDTO, Goal>(dto, foundGoal);
+                // convert to the get dto and then return it 
+                var finalResult = _mapper.Map<Goal, GetGoalDTO>(updatedGoal);
+                _unitOfWork.Save();
+                return finalResult;
+            }
+            else
+            {
+                throw new Exception("Resource not found");
+            }
+        }
     }
 }

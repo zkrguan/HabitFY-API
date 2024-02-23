@@ -11,5 +11,7 @@ namespace HabitFY_API.Interfaces.Services
 
         public GetGoalDTO CreateGoal(CreateGoalDTO dto);
 
+        public GetGoalDTO UpdateGoal(int id, UpdateGoalDTO dto);
+
     }
 }

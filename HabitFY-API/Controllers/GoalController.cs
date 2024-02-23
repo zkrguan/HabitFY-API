@@ -90,8 +90,17 @@ namespace HabitFY_API.Controllers
 
         // PUT api/v1/<GoalController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] UpdateGoalDTO dto)
         {
+            try
+            {
+                var result = _goalService.UpdateGoal(id, dto);
+                return Ok(result);
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
 
