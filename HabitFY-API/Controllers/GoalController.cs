@@ -47,7 +47,10 @@ namespace HabitFY_API.Controllers
             }
 
         }
+        // End__Ticket 1__________________
 
+
+        // Ticket 2__________________
         // GET api/v1/<GoalController>/5
         [HttpGet("{id}")]
         public IActionResult GetOne(int id)
@@ -69,7 +72,8 @@ namespace HabitFY_API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        // End__Ticket 1__________________
+        // End__Ticket 2__________________
+
 
         // POST api/v1/<GoalController>
         [HttpPost()]
@@ -103,23 +107,22 @@ namespace HabitFY_API.Controllers
             }
         }
 
-
-
-        // Start__Ticket 2__________________
         // Patch Route needs to be built
         [HttpPatch("{id}/{activated}")]
-        public void Patch(int id, [FromBody] int activated)
+        public IActionResult Patch(int id, bool activated)
         {
-
+            try
+            {
+                _goalService.ActivateGoal(id, activated);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
-        // End__Ticket 2__________________
 
-        //// DELETE api/v1/<GoalController>/5
-        //[HttpPatch("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
 
         // GET: api/v1/<GoalController>/byUserId/userId?
         [HttpGet("test/{userId}")]
