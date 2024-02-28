@@ -3,6 +3,7 @@ using HabitFY_API.DTOs.Goal;
 using HabitFY_API.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient.DataClassification;
+using Newtonsoft.Json.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,21 +20,51 @@ namespace HabitFY_API.Controllers
         public GoalController(IGoalService goalService) 
         {
             _goalService = goalService;
-
         }
 
         // GET: api/v1/<GoalController>/byUserId/userId?
         [HttpGet("byUserId/{userId}")]
-        public IEnumerable<string> Get(string userId)
+        public IEnumerable<GetGoalDTO> Get(string userId)
         {
-            return ["I am 1", "I am 2"];
+            try
+            {
+                var result = _goalService.GetGoalsByUserId(userId);
+                if (result == null) 
+                { 
+                    throw new ArgumentException("No User Found"); 
+                }
+                else 
+                { 
+                    // Returns list of goals with details, not sure if desired result
+                    return result; 
+                }
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         // GET api/v1/<GoalController>/5
         [HttpGet("{id}")]
-        public string GetOne(int id)
+        public IActionResult GetOne(int id)
         {
-            return "value";
+            try
+            {
+                var result = _goalService.GetOneGoalById(id);
+                if (result == null) 
+                { 
+                    throw new Exception("No Goal Found"); 
+                }
+                else
+                {
+                    return Ok(result);
+                }
+            }
+            catch(Exception ex) 
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // POST api/v1/<GoalController>
