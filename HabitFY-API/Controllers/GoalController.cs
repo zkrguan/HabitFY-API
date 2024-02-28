@@ -24,7 +24,7 @@ namespace HabitFY_API.Controllers
 
         // GET: api/v1/<GoalController>/byUserId/userId?
         [HttpGet("byUserId/{userId}")]
-        public IEnumerable<GetGoalDTO> Get(string userId)
+        public IActionResult Get(string userId)
         {
             try
             {
@@ -36,12 +36,12 @@ namespace HabitFY_API.Controllers
                 else 
                 { 
                     // Returns list of goals with details, not sure if desired result
-                    return result; 
+                    return Ok(result); 
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                return null;
+                return BadRequest(ex.Message);
             }
         }
 
