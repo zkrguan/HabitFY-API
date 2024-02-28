@@ -25,7 +25,9 @@ namespace HabitFY_API.Services
         // RG: Try Implement this yourself by using _unitOfwork
         public GetGoalDTO GetOneGoalById(int id)
         {
-            throw new NotImplementedException();
+            var userGoal = _unitOfWork.Goal.GetById(id);
+            var result = _mapper.Map<GetGoalDTO>(userGoal);
+            return result;
         }
 
         //

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient.DataClassification;
 using System;
 
+
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace HabitFY_API.Controllers
@@ -20,25 +21,53 @@ namespace HabitFY_API.Controllers
         public GoalController(IGoalService goalService) 
         {
             _goalService = goalService;
-
         }
         // Ticket 1__________________
         // GET: api/v1/<GoalController>/byUserId/userId?
         [HttpGet("byUserId/{userId}")]
-        // RG Change Whatever you need to change, the service has been built. 
-        // For sure you need to change the type of return
-        public IEnumerable<string> Get(string userId)
+
+        public IActionResult Get(string userId)
         {
-            return ["I am 1", "I am 2"];
-            // Sujan's request there is nothing has been found, please return null
-            // If internal error or other exceptions, null as well. 
+            try
+            {
+                var result = _goalService.GetGoalsByUserId(userId);
+                if (result == null) 
+                { 
+                    throw new ArgumentException("No User Found"); 
+                }
+                else 
+                { 
+                    // Returns list of goals with details, not sure if desired result
+                    return Ok(result); 
+                }
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         // GET api/v1/<GoalController>/5
         [HttpGet("{id}")]
-        public string GetOne(int id)
+        public IActionResult GetOne(int id)
         {
-            return "value";
+            try
+            {
+                var result = _goalService.GetOneGoalById(id);
+                if (result == null) 
+                { 
+                    throw new Exception("No Goal Found"); 
+                }
+                else
+                {
+                    return Ok(result);
+                }
+            }
+            catch(Exception ex) 
+            {
+                return BadRequest(ex.Message);
+            }
         }
         // End__Ticket 1__________________
 
