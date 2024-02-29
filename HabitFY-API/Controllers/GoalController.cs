@@ -22,10 +22,8 @@ namespace HabitFY_API.Controllers
         {
             _goalService = goalService;
         }
-        // Ticket 1__________________
         // GET: api/v1/<GoalController>/byUserId/userId?
         [HttpGet("byUserId/{userId}")]
-
         public IActionResult Get(string userId)
         {
             try
@@ -48,10 +46,8 @@ namespace HabitFY_API.Controllers
             }
 
         }
-        // End__Ticket 1__________________
 
 
-        // Ticket 2__________________
         // GET api/v1/<GoalController>/5
         [HttpGet("{id}")]
         public IActionResult GetOne(int id)
@@ -74,7 +70,6 @@ namespace HabitFY_API.Controllers
                 return NotFound(null);
             }
         }
-        // End__Ticket 2__________________
 
 
         // POST api/v1/<GoalController>
@@ -88,8 +83,7 @@ namespace HabitFY_API.Controllers
             }
             catch(Exception e) 
             {
-                // RG In the future implement the logs?
-                return BadRequest(e.Message);
+                return BadRequest("Record was not created as expected!");
             }
 
         }
@@ -105,7 +99,7 @@ namespace HabitFY_API.Controllers
             }
             catch(Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest("Record was not updated as expected!");
             }
         }
 
@@ -120,18 +114,8 @@ namespace HabitFY_API.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest("Goal was not activated or deactivated as expected!");
             }
         }
-
-
-
-        // GET: api/v1/<GoalController>/byUserId/userId?
-        [HttpGet("test/{userId}")]
-        public IEnumerable<GetGoalDTO> Test(string userId)
-        {
-            return _goalService.GetGoalsByUserId(userId);
-        }
-
     }
 }

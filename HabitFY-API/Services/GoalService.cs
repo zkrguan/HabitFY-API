@@ -22,7 +22,6 @@ namespace HabitFY_API.Services
         }
 
         
-        // RG: Try Implement this yourself by using _unitOfwork
         public GetGoalDTO GetOneGoalById(int id)
         {
             var userGoal = _unitOfWork.Goal.GetById(id);
@@ -53,9 +52,7 @@ namespace HabitFY_API.Services
             var foundGoal = _unitOfWork.Goal.GetById(id);
             if (foundGoal != null)
             {
-                // update the object by using automapper
                 var updatedGoal = _mapper.Map<UpdateGoalDTO, Goal>(dto, foundGoal);
-                // convert to the get dto and then return it 
                 var finalResult = _mapper.Map<Goal, GetGoalDTO>(updatedGoal);
                 _unitOfWork.Save();
                 return finalResult;
