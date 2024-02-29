@@ -69,6 +69,7 @@ namespace HabitFY_API.Services
             if (foundGoal != null)
             {
                 foundGoal.IsActivated = activated;
+                foundGoal.LastUpdated = DateTime.Now;
                 _unitOfWork.Save();
             }
             else
