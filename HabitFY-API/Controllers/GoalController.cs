@@ -31,7 +31,7 @@ namespace HabitFY_API.Controllers
             try
             {
                 var result = _goalService.GetGoalsByUserId(userId);
-                if (result == null) 
+                if (result.Count() == 0) 
                 { 
                     throw new ArgumentException("No User Found"); 
                 }
@@ -43,7 +43,8 @@ namespace HabitFY_API.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest(ex.Message);
+                // Future use the logger to track the code
+                return NotFound(null);
             }
 
         }
@@ -66,7 +67,8 @@ namespace HabitFY_API.Controllers
             }
             catch(Exception ex) 
             {
-                return BadRequest(ex.Message);
+                // You can logger to track the exceptions here
+                return NotFound(null);
             }
         }
         // End__Ticket 1__________________
