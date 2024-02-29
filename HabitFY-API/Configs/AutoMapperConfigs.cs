@@ -24,9 +24,7 @@ namespace HabitFY_API.Configs
                     // Map UserProfile to Goal's UserProfile property
                     return userProfile;
                }));
-
-
-
+            CreateMap<UpdateGoalDTO, Goal>();
         }
     }
 }
