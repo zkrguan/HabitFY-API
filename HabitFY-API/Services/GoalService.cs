@@ -22,22 +22,21 @@ namespace HabitFY_API.Services
         }
 
         
-        // RG: Try Implement this yourself by using _unitOfwork
         public GetGoalDTO GetOneGoalById(int id)
         {
-            throw new NotImplementedException();
+            var userGoal = _unitOfWork.Goal.GetById(id);
+            var result = _mapper.Map<GetGoalDTO>(userGoal);
+            return result;
         }
 
         //
         public GetGoalDTO CreateGoal(CreateGoalDTO dto)
         {
             var foundUser = _unitOfWork.UserProfile.GetById(dto.ProfileId);
-            if (foundUser != null)
+            if (foundUser != null )
             {
                 var record = _mapper.Map<CreateGoalDTO, Goal>(dto, opt => opt.Items["UserProfile"] = foundUser);
-                #pragma warning disable CS8604 // Possible null reference argument.
                 _unitOfWork.Goal.Add(record);
-                #pragma warning restore CS8604 // Possible null reference argument.
                 _unitOfWork.Save();
                 return _mapper.Map<Goal,GetGoalDTO>(record);
             }
@@ -46,6 +45,37 @@ namespace HabitFY_API.Services
                 throw new Exception("Resource not found");
             }
 
+        }
+
+        public GetGoalDTO UpdateGoal(int id,UpdateGoalDTO dto)
+        {
+            var foundGoal = _unitOfWork.Goal.GetById(id);
+            if (foundGoal != null)
+            {
+                var updatedGoal = _mapper.Map<UpdateGoalDTO, Goal>(dto, foundGoal);
+                var finalResult = _mapper.Map<Goal, GetGoalDTO>(updatedGoal);
+                _unitOfWork.Save();
+                return finalResult;
+            }
+            else
+            {
+                throw new Exception("Resource not found");
+            }
+        }
+
+        public void ActivateGoal(int id, bool activated)
+        {
+            var foundGoal = _unitOfWork.Goal.GetById(id);
+            if (foundGoal != null)
+            {
+                foundGoal.IsActivated = activated;
+                foundGoal.LastUpdated = DateTime.Now;
+                _unitOfWork.Save();
+            }
+            else
+            {
+                throw new Exception("Resource not found");
+            }
         }
     }
 }

@@ -6,8 +6,8 @@
         public required string Description { get; set; }
         public required DateTime StartDate { get; set; }
         public required DateTime EndDate { get; set;}
-        public required DateTime LastUpdated { get; set; }
-        public required DateTime CreatedTime {  get; set; }    
+        public required DateTime LastUpdated { get; set; } = DateTime.Now;
+        public required DateTime CreatedTime {  get; set; } = DateTime.Now;
         // Is this became to an archive of the user.
         public required bool IsActivated { get; set; }
         public required bool IsQuitting { get; set; }
@@ -23,5 +23,6 @@
 
         // The goal could have one zero or multiple records
         public ICollection<ProgressRecord>? ProgressRecords { get; set; }
+
     }
 }

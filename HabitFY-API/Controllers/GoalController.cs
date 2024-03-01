@@ -3,6 +3,8 @@ using HabitFY_API.DTOs.Goal;
 using HabitFY_API.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient.DataClassification;
+using System;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,22 +21,56 @@ namespace HabitFY_API.Controllers
         public GoalController(IGoalService goalService) 
         {
             _goalService = goalService;
-
         }
-
         // GET: api/v1/<GoalController>/byUserId/userId?
         [HttpGet("byUserId/{userId}")]
-        public IEnumerable<string> Get(string userId)
+        public IActionResult Get(string userId)
         {
-            return ["I am 1", "I am 2"];
+            try
+            {
+                var result = _goalService.GetGoalsByUserId(userId);
+                if (result.Count() == 0) 
+                { 
+                    throw new ArgumentException("No User Found"); 
+                }
+                else 
+                { 
+                    // Returns list of goals with details, not sure if desired result
+                    return Ok(result); 
+                }
+            }
+            catch(Exception ex)
+            {
+                // Future use the logger to track the code
+                return NotFound(null);
+            }
+
         }
+
 
         // GET api/v1/<GoalController>/5
         [HttpGet("{id}")]
-        public string GetOne(int id)
+        public IActionResult GetOne(int id)
         {
-            return "value";
+            try
+            {
+                var result = _goalService.GetOneGoalById(id);
+                if (result == null) 
+                { 
+                    throw new Exception("No Goal Found"); 
+                }
+                else
+                {
+                    return Ok(result);
+                }
+            }
+            catch(Exception ex) 
+            {
+                // You can logger to track the exceptions here
+                return NotFound(null);
+            }
         }
+
 
         // POST api/v1/<GoalController>
         [HttpPost()]
@@ -47,30 +83,39 @@ namespace HabitFY_API.Controllers
             }
             catch(Exception e) 
             {
-                // RG In the future implement the logs?
-                return BadRequest(e.Message);
+                return BadRequest("Record was not created as expected!");
             }
 
         }
 
         // PUT api/v1/<GoalController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] UpdateGoalDTO dto)
         {
+            try
+            {
+                var result = _goalService.UpdateGoal(id, dto);
+                return Ok(result);
+            }
+            catch(Exception e)
+            {
+                return BadRequest("Record was not updated as expected!");
+            }
         }
 
-        // DELETE api/v1/<GoalController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        // Patch Route needs to be built
+        [HttpPatch("{id}/{activated}")]
+        public IActionResult Patch(int id, bool activated)
         {
+            try
+            {
+                _goalService.ActivateGoal(id, activated);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Goal was not activated or deactivated as expected!");
+            }
         }
-
-        // GET: api/v1/<GoalController>/byUserId/userId?
-        [HttpGet("test/{userId}")]
-        public IEnumerable<GetGoalDTO> Test(string userId)
-        {
-            return _goalService.GetGoalsByUserId(userId);
-        }
-
     }
 }
