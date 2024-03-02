@@ -10,5 +10,6 @@ namespace HabitFY_API.DTOs.Goal
         public required bool IsQuitting { get; set; }
         public required double GoalValue { get; set; }
         public required string ProfileId { get; set; }
+        public required string EmailAddress {  get; set; }
     }
 }
