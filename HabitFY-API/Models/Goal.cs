@@ -16,6 +16,7 @@
         
         // RG: GoalValue is target per day. Like drinking 5 l  
         public required double GoalValue { get; set; }
+        public required string Unit { get; set; }
 
         // One Profile can have many Goals
         // One Goal can only be referred to one Profile
