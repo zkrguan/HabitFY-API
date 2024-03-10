@@ -92,6 +92,7 @@ builder.Services.AddSingleton(mapper);
 // ___________________________Services registered here__________________________
 builder.Services.AddScoped<UserProfileService>();
 builder.Services.AddScoped<IGoalService,GoalService>();
+builder.Services.AddScoped<IProgressRecordService,ProgressRecordService>();
 builder.Services.AddScoped<CosmosService>();
 // -----------------------------------------------------
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
