@@ -10,7 +10,11 @@ namespace HabitFY_API.Repositories.UnitOfWork
         //  That is why only getter is there. 
         IUserProfileRepository UserProfile { get; }
         IGoalRepository Goal { get; }
+        
+        IProgressRecordRepository ProgressRecord { get; }
+
         // Save for creation 
+
         int Save();
     }
 }

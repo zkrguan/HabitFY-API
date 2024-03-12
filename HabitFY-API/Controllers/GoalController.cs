@@ -31,7 +31,7 @@ namespace HabitFY_API.Controllers
                 var result = _goalService.GetGoalsByUserId(userId);
                 if (result.Count() == 0) 
                 { 
-                    throw new ArgumentException("No User Found"); 
+                    throw new ArgumentException("No goals found"); 
                 }
                 else 
                 { 

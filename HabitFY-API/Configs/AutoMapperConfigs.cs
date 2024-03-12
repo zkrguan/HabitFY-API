@@ -1,5 +1,6 @@
 using AutoMapper;
 using HabitFY_API.DTOs.Goal;
+using HabitFY_API.DTOs.ProgressRecord;
 using HabitFY_API.DTOs.UserProfile;
 using HabitFY_API.Models;
 
@@ -26,6 +27,15 @@ namespace HabitFY_API.Configs
                }));
             CreateMap<UpdateGoalDTO, Goal>()
                 .ForMember(dest => dest.LastUpdated, opt => opt.MapFrom(src => DateTime.Now));
+            CreateMap<ProgressRecord,GetProgressRecordDTO>();
+            CreateMap<CreateProgressRecordDTO, ProgressRecord>()
+                .ForMember(dest => dest.Goal, opt => opt.MapFrom((src, dest, destMember, context) => 
+                {
+                    // This is how we access the parameters from the service, when conversion we actually
+                    // pass the Goal from the Items field
+                    var goal = context.Items["Goal"] as Goal;
+                    return goal;
+                }));
         }
     }
 }
