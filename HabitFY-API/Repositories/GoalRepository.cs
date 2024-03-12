@@ -6,7 +6,7 @@ namespace HabitFY_API.Repositories
     public class GoalRepository : GenericRepository<Goal,int>, IGoalRepository
     {
         // RG you don't even need to declare another _context, 
-        //    It was already set up there. 
+        //    It was already set up inside the constructor, you could just use like the method I decalred down.
         public GoalRepository(ApplicationContext context) : base(context) 
         {
         }
