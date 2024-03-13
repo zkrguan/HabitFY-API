@@ -18,5 +18,6 @@ namespace HabitFY_API.DTOs.UserProfile
 
         [Range(1, 100, ErrorMessage = "Enter a valid number for age!")]
         public int? Age { get; set; }
+        public required string EmailAddress { get; set; }
     }
 }

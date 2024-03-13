@@ -16,28 +16,22 @@ namespace HabitFY_API.Services
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public IEnumerable<GetGoalDTO> GetGoalsByUserId(string userId)
+        public async Task<IEnumerable<GetGoalDTO>> GetGoalsByUserId(string userId)
         {
-            return _mapper.Map<IEnumerable<Goal>, IEnumerable<GetGoalDTO>>(_unitOfWork.Goal.GetGoalsByUserId(userId));
+            return _mapper.Map<IEnumerable<Goal>, IEnumerable<GetGoalDTO>>(await _unitOfWork.Goal.GetGoalsByUserId(userId));
         }
-
-        
-        public GetGoalDTO GetOneGoalById(int id)
+        public async Task<GetGoalDTO?> GetOneGoalById(int id)
         {
-            var userGoal = _unitOfWork.Goal.GetById(id);
-            var result = _mapper.Map<GetGoalDTO>(userGoal);
-            return result;
+            return _mapper.Map<GetGoalDTO>(await _unitOfWork.Goal.GetById(id));
         }
-
-        //
-        public GetGoalDTO CreateGoal(CreateGoalDTO dto)
+        public async Task<GetGoalDTO> CreateGoal(CreateGoalDTO dto)
         {
-            var foundUser = _unitOfWork.UserProfile.GetById(dto.ProfileId);
-            if (foundUser != null )
+            var foundUser = await _unitOfWork.UserProfile.GetById(dto.ProfileId);
+            if (foundUser != null)
             {
                 var record = _mapper.Map<CreateGoalDTO, Goal>(dto, opt => opt.Items["UserProfile"] = foundUser);
-                _unitOfWork.Goal.Add(record);
-                _unitOfWork.Save();
+                await _unitOfWork.Goal.AddAsync(record);
+                await _unitOfWork.SaveAsync();
                 return _mapper.Map<Goal,GetGoalDTO>(record);
             }
             else
@@ -46,15 +40,14 @@ namespace HabitFY_API.Services
             }
 
         }
-
-        public GetGoalDTO UpdateGoal(int id,UpdateGoalDTO dto)
+        public async Task<GetGoalDTO> UpdateGoal(int id,UpdateGoalDTO dto)
         {
-            var foundGoal = _unitOfWork.Goal.GetById(id);
+            var foundGoal = await _unitOfWork.Goal.GetById(id);
             if (foundGoal != null)
             {
                 var updatedGoal = _mapper.Map<UpdateGoalDTO, Goal>(dto, foundGoal);
                 var finalResult = _mapper.Map<Goal, GetGoalDTO>(updatedGoal);
-                _unitOfWork.Save();
+                await _unitOfWork.SaveAsync();
                 return finalResult;
             }
             else
@@ -62,15 +55,14 @@ namespace HabitFY_API.Services
                 throw new Exception("Resource not found");
             }
         }
-
-        public void ActivateGoal(int id, bool activated)
+        public async Task ActivateGoal(int id, bool activated)
         {
-            var foundGoal = _unitOfWork.Goal.GetById(id);
+            var foundGoal = await _unitOfWork.Goal.GetById(id);
             if (foundGoal != null)
             {
                 foundGoal.IsActivated = activated;
                 foundGoal.LastUpdated = DateTime.Now;
-                _unitOfWork.Save();
+                await _unitOfWork.SaveAsync();
             }
             else
             {

@@ -19,11 +19,11 @@ namespace HabitFY_API.Controllers
         }
 
         [HttpGet("byGoalId/{goalId}")]
-        public IActionResult GetProgressRecords(int goalId)
+        public async Task<IActionResult> GetProgressRecords(int goalId)
         {
             try 
             { 
-                var result = _progressService.GetProgressRecordsByGoalId(goalId);
+                var result = await _progressService.GetProgressRecordsByGoalId(goalId);
                 if (result.Count() == 0)
                 {
                     throw new Exception("No records found");
@@ -43,11 +43,11 @@ namespace HabitFY_API.Controllers
 
         // GET api/<ProgressRecordController>/5
         [HttpGet("{id}")]
-        public IActionResult GetOne(int id)
+        public async Task<IActionResult> GetOne(int id)
         {
             try
             {
-                var result = _progressService.GetProgressRecord(id);
+                var result = await _progressService.GetProgressRecord(id);
                 if(result == null)
                 {
                     throw new Exception("No Record Found");
@@ -65,16 +65,16 @@ namespace HabitFY_API.Controllers
 
         // POST api/<ProgressRecordController>
         [HttpPost]
-        public IActionResult Post([FromBody] CreateProgressRecordDTO dto)
+        public async Task<IActionResult> Post([FromBody] CreateProgressRecordDTO dto)
         {
             try
             {
-                var newRecord = _progressService.CreateProgressRecord(dto);
+                var newRecord = await _progressService.CreateProgressRecord(dto);
                 return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{newRecord.Id}", "Record persisted");
             }
             catch (Exception ex)
             {
-                return BadRequest("Record was not created as expected!" + ex);
+                return BadRequest("Record was not created as expected!");
             }
         }
 
