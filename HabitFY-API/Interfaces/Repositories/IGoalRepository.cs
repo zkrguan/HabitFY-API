@@ -6,6 +6,6 @@ namespace HabitFY_API.Interfaces.Repositories
     {
         // RG: Considering adding the async methods here? This could do some big operations?
         // Or potentially other methods because this module won't be easy to implement
-        public IEnumerable<Goal> GetGoalsByUserId(string userId);
+        public Task<IEnumerable<Goal>> GetGoalsByUserId(string userId);
     }
 }

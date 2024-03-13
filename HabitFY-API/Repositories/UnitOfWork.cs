@@ -29,5 +29,10 @@ namespace HabitFY_API.Repositories.UnitOfWork
         {
             _context.Dispose();
         }
+
+        public async Task<int> SaveAsync()
+        {
+            return await _context.SaveChangesAsync();
+        }
     }
 }

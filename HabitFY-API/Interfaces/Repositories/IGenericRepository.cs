@@ -6,13 +6,15 @@ namespace HabitFY_API.Interfaces.Repositories
     public interface IGenericRepository<T, KeyType> where T : class
     {
         // RG:
-        // First Define a few generic Methods 
-        // Like almost all the repo class should have these methods. 
-        T GetById(KeyType id);
-        IEnumerable<T> GetAll();
-        IEnumerable<T> Find(Expression<Func<T, bool>> expression);
-        void Add(T entity);
-        void AddRange(IEnumerable<T> entities);
+        // Like almost all the repo class should have these methods.
+        // Also the ORM methods should be async. The benefits can be googled but from my POV
+        // DB methods could take a long time to run, at the same time,you still want the main thread to 
+        // accepting the requests from the user. 
+        // This kind of benefits would not show while you only have a handful of users. 
+        Task <T?> GetById(KeyType id);
+        Task<IEnumerable<T>> GetAll();
+        Task AddAsync(T entity);
+        Task AddRangeAsync(IEnumerable<T> entities);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entities);
     }
