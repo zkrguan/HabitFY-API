@@ -26,7 +26,8 @@ namespace HabitFY_API.Services
                 var record = _mapper.Map<CreateProgressRecordDTO, ProgressRecord>(dto, opt => opt.Items["Goal"] = foundGoal);
                 if(record!=null)
                     await _unitOfWork.ProgressRecord.AddAsync(record);
-                await _unitOfWork.SaveAsync();
+                    await _unitOfWork.SaveAsync(); 
+                // Other business to do //
                 return _mapper.Map<ProgressRecord, GetProgressRecordDTO>(record);
             }
             else

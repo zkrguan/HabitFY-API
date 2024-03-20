@@ -13,7 +13,7 @@ namespace HabitFY_API.Services
         private readonly string _databaseName;
         private Container _container 
         {
-            get => _client.GetDatabase(_databaseName).GetContainer("UserReminderSetting");
+            get => _client.GetDatabase(_databaseName).GetContainer("UserDailyReport");
         }
 
         public CosmosService()
@@ -28,45 +28,18 @@ namespace HabitFY_API.Services
             _client = new CosmosClient(connectionString: connnection);
         }
 
-        public async Task <UserReminderSetting> GetOneReminderSettingByUserIDAsync(string objID, string userID)
+        public async Task <UserReportCache> GetOneUserReportByUserIDAsync(string userID,string postalCode)
         {
             try
             {
-                ItemResponse<UserReminderSetting> response = 
-                    await _container.ReadItemAsync<UserReminderSetting>(objID, new PartitionKey(userID));
+                ItemResponse<UserReportCache> response = 
+                    await _container.ReadItemAsync<UserReportCache>(userID, new PartitionKey(postalCode));
                 return response.Resource;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
                 return null;
             }
-
-        }
-
-        // RG: This is for backend internal use only, do not connect to the frontned. 
-        // Input would be 
-        // For bulk operation, the function must be async because you don't want to block the main thread for too long.
-        public async Task<IEnumerable<UserReminderSetting>> GetReminderSettingsAsync(string queryString)
-        {
-            var query = this._container.GetItemQueryIterator<UserReminderSetting>(new QueryDefinition(queryString));
-            List<UserReminderSetting> results = new List<UserReminderSetting>();
-            while (query.HasMoreResults)
-            {
-                var response = await query.ReadNextAsync();
-
-                results.AddRange(response.ToList());
-            }
-
-            return results;
-        }
-        public async Task UpdateSettingAsync(string partitionId, UserReminderSetting setting)
-        {
-            await _container.UpsertItemAsync<UserReminderSetting>(setting, new PartitionKey(partitionId));
-        }
-
-        public async Task AddItemAsync(UserReminderSetting setting)
-        {
-            await this._container.CreateItemAsync<UserReminderSetting>(setting, new PartitionKey(setting.UserId));
         }
     }
 }
