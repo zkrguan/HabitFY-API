@@ -33,6 +33,7 @@ namespace HabitFY_API.Configs
                 {
                     // This is how we access the parameters from the service, when conversion we actually
                     // pass the Goal from the Items field
+                    dest.CreatedTime = DateTime.Now;
                     var goal = context.Items["Goal"] as Goal;
                     return goal;
                 }));

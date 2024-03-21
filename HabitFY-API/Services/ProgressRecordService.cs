@@ -41,9 +41,9 @@ namespace HabitFY_API.Services
             return _mapper.Map<ProgressRecord,GetProgressRecordDTO>(await _unitOfWork.ProgressRecord.GetById(id));
         }
 
-        public async Task<IEnumerable<GetProgressRecordDTO>> GetProgressRecordsByGoalId(int goalId)
+        public async Task<IEnumerable<GetProgressRecordDTO>> GetProgressRecordsByGoalId(int goalId, DateTime queryDate)
         {
-            return _mapper.Map<IEnumerable<ProgressRecord>, IEnumerable<GetProgressRecordDTO>>(await _unitOfWork.ProgressRecord.GetRecordsByGoalId(goalId));
+            return _mapper.Map<IEnumerable<ProgressRecord>, IEnumerable<GetProgressRecordDTO>>(await _unitOfWork.ProgressRecord.GetRecordsByGoalId(goalId,queryDate));
         }
     }
 }

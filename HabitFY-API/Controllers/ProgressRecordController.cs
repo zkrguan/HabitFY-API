@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using HabitFY_API.DTOs.ProgressRecord;
 using HabitFY_API.Interfaces.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -18,12 +19,13 @@ namespace HabitFY_API.Controllers
             _progressService = progressService;
         }
 
-        [HttpGet("byGoalId/{goalId}")]
-        public async Task<IActionResult> GetProgressRecords(int goalId)
+        [HttpGet("byGoalId/{goalId}/{date}")]
+        public async Task<IActionResult> GetProgressRecords(int goalId, string date)
         {
             try 
             { 
-                var result = await _progressService.GetProgressRecordsByGoalId(goalId);
+                var parsedDate = DateTime.Parse(date);
+                var result = await _progressService.GetProgressRecordsByGoalId(goalId, parsedDate);
                 if (result.Count() == 0)
                 {
                     throw new Exception("No records found");
@@ -34,8 +36,14 @@ namespace HabitFY_API.Controllers
                 }
             
             }
+            catch (FormatException)
+            {
+                Console.WriteLine("Unable to convert '{0}'. into date object! Check your input.", date);
+                return BadRequest(date);
+            }
             catch (Exception ex) 
             {
+                Console.WriteLine(ex.ToString());
                 return NotFound(null);
             }
 
