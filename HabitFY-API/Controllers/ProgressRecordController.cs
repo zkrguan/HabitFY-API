@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using HabitFY_API.DTOs.ProgressRecord;
 using HabitFY_API.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HabitFY_API.Controllers
 {
+    [Authorize]
     [ApiVersion(1)]
     [Route("api/v{v:apiVersion}/[controller]")]
     [ApiController]

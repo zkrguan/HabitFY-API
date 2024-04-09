@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using HabitFY_API.DTOs.Goal;
 using HabitFY_API.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HabitFY_API.Controllers
 {
     // RG: CRITICAL Remember to close the door before you finish the project
-    //[Authorize]
+    [Authorize]
     [ApiVersion(1)]
     [ApiController]
     [Route("api/v{v:apiVersion}/[controller]")]

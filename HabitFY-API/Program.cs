@@ -39,7 +39,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
+        policy.WithOrigins("https://habitfy.vercel.app")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -74,6 +74,9 @@ builder.Services.AddApiVersioning(options =>
     options.GroupNameFormat = "'v'V";
     options.SubstituteApiVersionInUrl = true;
 });
+
+builder.Services.AddHealthChecks();
+
 
 // -------------------------------------------------
 builder.Services.AddControllers();
@@ -117,6 +120,8 @@ app.UseHttpsRedirection();
 app.UseCors("AllowSpecificOrigin");
 
 app.UseAuthorization();
+
+app.MapHealthChecks("/");
 
 app.MapControllers();
 
