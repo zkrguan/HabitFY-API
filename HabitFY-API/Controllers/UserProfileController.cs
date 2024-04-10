@@ -1,13 +1,13 @@
 ﻿using Asp.Versioning;
 using HabitFY_API.DTOs.UserProfile;
 using HabitFY_API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace HabitFY_API.Controllers
 {
     // RG: CRITICAL Remember to close the door before you finish the project
-    //[Authorize]
+    [Authorize]
     [ApiVersion(1)]
     [ApiController]
     [Route("api/v{v:apiVersion}/[controller]")]
@@ -24,14 +24,14 @@ namespace HabitFY_API.Controllers
         [MapToApiVersion(1)]
         // GET api/<UserProfileController>/5
         [HttpGet("{id}")]
-        public IActionResult Get(string id)
+        public async Task<IActionResult> Get(string id)
         {
             //AP:try and catch for handling any exceptions thrown
             //If an exception encountered == response code: 404 and content-length: 0
             try
             {
                 //Get user profile dto
-                var result = _userProfileService.GetUserProfileByID(id);
+                var result = await _userProfileService.GetUserProfileByID(id);
                 if (result == null) { throw new ArgumentException("No User Found"); }
                 else
                     return Ok(result);
@@ -47,11 +47,11 @@ namespace HabitFY_API.Controllers
 
         [MapToApiVersion(1)]
         [HttpPost]
-        public IActionResult Post([FromBody] CreateUserProfileDTO dto)
+        public async Task<IActionResult> Post([FromBody] CreateUserProfileDTO dto)
         {
             try
             {
-                _userProfileService.CreateUserProfile(dto);
+                await _userProfileService.CreateUserProfile(dto);
                 return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{dto.Id}","Record persisted");
             }
             catch (Exception ex) { 
@@ -63,12 +63,11 @@ namespace HabitFY_API.Controllers
         [MapToApiVersion(1)]
         // PUT api/<UserProfileController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(string id, [FromBody] UpdateUserProfileDTO dto)
+        public async Task<IActionResult> Put(string id, [FromBody] UpdateUserProfileDTO dto)
         {
-            // 
             try
             {
-                _userProfileService.UpdateUserProfile(id, dto);
+                await _userProfileService.UpdateUserProfile(id, dto);
                 return Ok("Updated success");
             }
             catch (Exception)
@@ -76,16 +75,6 @@ namespace HabitFY_API.Controllers
                 return BadRequest();
             }
         }
-
-
-        //// RG: This is my test field. Please don't touch this one. 
-        //[HttpGet("/test")]
-        //public async Task<IActionResult> getTestAsync()
-        //{
-        //    //var result = await _userProfileService.TestService();
-        //    await _userProfileService.TestService();
-        //    return Ok("Done testing");
-        //}
 
     }
 }

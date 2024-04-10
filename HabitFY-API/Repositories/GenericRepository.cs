@@ -1,5 +1,6 @@
 ﻿using HabitFY_API.Interfaces.Repositories;
 using HabitFY_API.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace HabitFY_API.Repositories
@@ -11,25 +12,22 @@ namespace HabitFY_API.Repositories
         {
             _context = context;
         }
-        public void Add(T entity)
+        public async Task AddAsync(T entity)
         {
-            _context.Set<T>().Add(entity);
+            await _context.Set<T>().AddAsync(entity);
         }
-        public void AddRange(IEnumerable<T> entities)
+        public async Task AddRangeAsync(IEnumerable<T> entities)
         {
-            _context.Set<T>().AddRange(entities);
+            await _context.Set<T>().AddRangeAsync(entities);
         }
-        public IEnumerable<T> Find(Expression<Func<T, bool>> expression)
+
+        public async Task<IEnumerable<T>> GetAll()
         {
-            return _context.Set<T>().Where(expression);
+            return await _context.Set<T>().ToListAsync();
         }
-        public IEnumerable<T> GetAll()
+        public async Task<T?> GetById(KeyType id)
         {
-            return _context.Set<T>().ToList();
-        }
-        public T GetById(KeyType id)
-        {
-            return _context.Set<T>().Find(id);
+            return await _context.Set<T>().FindAsync(id);
         }
         public void Remove(T entity)
         {

@@ -1,12 +1,15 @@
 ﻿using Asp.Versioning;
 using HabitFY_API.DTOs.ProgressRecord;
 using HabitFY_API.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace HabitFY_API.Controllers
 {
+    [Authorize]
     [ApiVersion(1)]
     [Route("api/v{v:apiVersion}/[controller]")]
     [ApiController]
@@ -18,12 +21,13 @@ namespace HabitFY_API.Controllers
             _progressService = progressService;
         }
 
-        [HttpGet("byGoalId/{goalId}")]
-        public IActionResult GetProgressRecords(int goalId)
+        [HttpGet("byGoalId/{goalId}/{date}")]
+        public async Task<IActionResult> GetProgressRecords(int goalId, string date)
         {
             try 
             { 
-                var result = _progressService.GetProgressRecordsByGoalId(goalId);
+                var parsedDate = DateTime.Parse(date);
+                var result = await _progressService.GetProgressRecordsByGoalId(goalId, parsedDate);
                 if (result.Count() == 0)
                 {
                     throw new Exception("No records found");
@@ -34,8 +38,14 @@ namespace HabitFY_API.Controllers
                 }
             
             }
+            catch (FormatException)
+            {
+                Console.WriteLine("Unable to convert '{0}'. into date object! Check your input.", date);
+                return BadRequest(date);
+            }
             catch (Exception ex) 
             {
+                Console.WriteLine(ex.ToString());
                 return NotFound(null);
             }
 
@@ -43,11 +53,11 @@ namespace HabitFY_API.Controllers
 
         // GET api/<ProgressRecordController>/5
         [HttpGet("{id}")]
-        public IActionResult GetOne(int id)
+        public async Task<IActionResult> GetOne(int id)
         {
             try
             {
-                var result = _progressService.GetProgressRecord(id);
+                var result = await _progressService.GetProgressRecord(id);
                 if(result == null)
                 {
                     throw new Exception("No Record Found");
@@ -65,16 +75,16 @@ namespace HabitFY_API.Controllers
 
         // POST api/<ProgressRecordController>
         [HttpPost]
-        public IActionResult Post([FromBody] CreateProgressRecordDTO dto)
+        public async Task<IActionResult> Post([FromBody] CreateProgressRecordDTO dto)
         {
             try
             {
-                var newRecord = _progressService.CreateProgressRecord(dto);
+                var newRecord = await _progressService.CreateProgressRecord(dto);
                 return Created($"{Request.Scheme}://{Request.Host}{Request.Path}/{newRecord.Id}", "Record persisted");
             }
             catch (Exception ex)
             {
-                return BadRequest("Record was not created as expected!" + ex);
+                return BadRequest("Record was not created as expected!");
             }
         }
 

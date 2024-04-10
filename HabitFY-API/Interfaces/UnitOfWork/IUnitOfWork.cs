@@ -10,11 +10,14 @@ namespace HabitFY_API.Repositories.UnitOfWork
         //  That is why only getter is there. 
         IUserProfileRepository UserProfile { get; }
         IGoalRepository Goal { get; }
-        
         IProgressRecordRepository ProgressRecord { get; }
 
-        // Save for creation 
-
+        // RG:
+        // TCL methods are here. 
+        // UOW can also audit the transactions which only needed by the big applications 
+        // Small projects like this one won't really show the value of that. 
         int Save();
+        Task<int> SaveAsync();
+        void Dispose();
     }
 }
