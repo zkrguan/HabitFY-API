@@ -19,8 +19,13 @@ namespace HabitFY_API.Configs
                .ForMember(dest => dest.IsActivated, opt => opt.MapFrom(src => false))
                .ForMember(dest => dest.Profile, opt => opt.MapFrom((src, dest, destMember, context) =>
                {
-                    // Access UserProfile from the context
-                    var userProfile = context.Items["UserProfile"] as UserProfile;
+                   var timeUtc = DateTime.UtcNow;
+                   TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+                   DateTime easternTime = TimeZoneInfo.ConvertTimeFromUtc(timeUtc, easternZone);
+                   dest.LastUpdated = easternTime;
+                   dest.CreatedTime = easternTime;
+                   // Access UserProfile from the context
+                   var userProfile = context.Items["UserProfile"] as UserProfile;
 
                     // Map UserProfile to Goal's UserProfile property
                     return userProfile;
@@ -33,7 +38,10 @@ namespace HabitFY_API.Configs
                 {
                     // This is how we access the parameters from the service, when conversion we actually
                     // pass the Goal from the Items field
-                    dest.CreatedTime = DateTime.Now;
+                    var timeUtc = DateTime.UtcNow;
+                    TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+                    DateTime easternTime = TimeZoneInfo.ConvertTimeFromUtc(timeUtc, easternZone);
+                    dest.CreatedTime = easternTime;
                     var goal = context.Items["Goal"] as Goal;
                     return goal;
                 }));
